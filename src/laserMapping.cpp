@@ -1112,7 +1112,11 @@ private:
         if (map_pub_en) publish_map(pubLaserCloudMap_);
     }
 
+#if defined(USE_HUMBLE_VERSION) || defined(USE_IRON_VERSION)
     void map_save_callback(std_srvs::srv::Trigger::Request::ConstSharedPtr req, std_srvs::srv::Trigger::Response::SharedPtr res)
+#else
+    void map_save_callback(const std::shared_ptr<std_srvs::srv::Trigger::Request> req, std::shared_ptr<std_srvs::srv::Trigger::Response> res)
+#endif
     {
         RCLCPP_INFO(this->get_logger(), "Saving map to %s...", map_file_path.c_str());
         if (pcd_save_en)
