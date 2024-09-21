@@ -60,6 +60,20 @@ def generate_launch_description():
         output='screen'
     )
 
+    transform_rslidar = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='rslidar_to_base_link',
+        arguments=['0', '0', '0', '0', '0', '0','base_link','rslidar'],
+    )
+
+    transform_imu = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='base_link_to_imu',
+        arguments=['0', '0', '0.02','0', '0', '0', '1','base_link','imu_link'],
+    )
+
     fast_lio_node = Node(
         package='fast_lio',
         executable='fastlio_mapping',
@@ -83,6 +97,8 @@ def generate_launch_description():
 
     ld.add_action(imu_node)
     ld.add_action(rslidar_node)
+    ld.add_action(transform_rslidar)
+    ld.add_action(transform_imu)
     ld.add_action(fast_lio_node)
     ld.add_action(rviz_node)
 
